@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>General NLP steps - cheatsheet</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">cheatsheet</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Welcome to MkDocs</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../git/" class="nav-link">GIT useful steps</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../gitlab_CI/" class="nav-link">Example of deploying to aws ECR from a base docker image</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../markdown-cheat-sheet/" class="nav-link">Markdown Cheat Sheet</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../nlp/" class="nav-link">General NLP steps</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">General NLP steps</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../python/" class="nav-link">Some useful python commands to help with ML</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../terraform/" class="nav-link">Sample Terraform script</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../nlp/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../python/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#general-nlp-steps" class="nav-link">General NLP steps</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#1-explore-the-dataset" class="nav-link">1. Explore the dataset</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#2-labelling" class="nav-link">2. Labelling</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#import-relevant-libraries" class="nav-link">Import relevant libraries</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="general-nlp-steps">General NLP steps</h1>
+<h2 id="1-explore-the-dataset">1. Explore the dataset</h2>
+<p>Look through the data set in order to see how it is formatted , the labels and contents. Can do so using for loop for first few data points.</p>
+<pre><code class="language-python">
+messages.head()
+
+for mess_no, message in enumerate(messages[:10]):
+    print(mess_no,message)
+    print('\n')
+
+</code></pre>
+<h2 id="2-labelling">2. Labelling</h2>
+<p>In the case of the spam/ham messages , the label of whether or not it is spam / ham is at the front of the message , seperated by a tab.</p>
+<pre><code class="language-text">
+0 ham   Go until jurong point, crazy.. Available only in bugis n great world la e buffet... Cine there got amore wat...
+
+</code></pre>
+<p>We would need to put the label in a different column of the pd data frame.</p>
+<pre><code class="language-python">
+messages = pd.read_csv('smsspamcollection/SMSSpamCollection',sep='\t',names=['label','message'])
+
+</code></pre>
+<p>Another useful attribute that might contribute could be length of message. To add that we add
+the end result would be a neatly seperated table with the label as different rows.</p>
+<pre><code class="language-python">
+messages['length'] = messages['message'].apply(len)
+
+</code></pre>
+<table>
+<thead>
+<tr>
+<th align="right"></th>
+<th align="left">label</th>
+<th align="left">message</th>
+<th align="right">length</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="right">0</td>
+<td align="left">ham</td>
+<td align="left">Go until jurong point, crazy.. Available only in bugis n great world la e buffet... Cine there got amore wat...</td>
+<td align="right">111</td>
+</tr>
+<tr>
+<td align="right">1</td>
+<td align="left">ham</td>
+<td align="left">Ok lar... Joking wif u oni...</td>
+<td align="right">29</td>
+</tr>
+<tr>
+<td align="right">2</td>
+<td align="left">spam</td>
+<td align="left">Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121 to receive entry question(std txt rate)T&amp;C's apply 08452810075over18's</td>
+<td align="right">155</td>
+</tr>
+<tr>
+<td align="right">3</td>
+<td align="left">ham</td>
+<td align="left">U dun say so early hor... U c already then say...</td>
+<td align="right">49</td>
+</tr>
+<tr>
+<td align="right">4</td>
+<td align="left">ham</td>
+<td align="left">Nah I don't think he goes to usf, he lives around here though</td>
+<td align="right">61</td>
+</tr>
+</tbody>
+</table>
+<h2 id="import-relevant-libraries">Import relevant libraries</h2>
+<pre><code class="language-python">import string
+
+mess = 'Sample message! Notice: it has punctuation.'
+
+# Check characters to see if they are in punctuation
+nopunc = [char for char in mess if char not in string.punctuation]
+
+# Join the characters again to form the string.
+nopunc = ''.join(nopunc) ## The join() method takes all items in an iterable and joins them into one string. the space infront of the join is what seperates the diff words.
+</code></pre>
+<h3 id="stopwords">Stopwords</h3>
+<p>stopwords are very common words that they do not help distinguish one source of text from the other.</p>
+<pre><code class="language-python">from nltk.corpus import stopwords
+stopwords.words('english')[0:10] # Show some stop words
+
+</code></pre>
+<p>First, we got to split the text up to individual words again. Next, we repeat the same function as nopunc to remove stopwords.</p>
+<pre><code class="language-python">clean_mess = [word for word in nopunc.split() if word.lower() not in stopwords.words('english')] ## put in a list all words that are not in stopwords english.
+</code></pre>
+<h3 id="function-for-text-pre-processing">Function for text pre-processing</h3>
+<pre><code class="language-python">def text_process(mess):
+    &quot;&quot;&quot;
+    Takes in a string of text, then performs the following:
+    1. Remove all punctuation
+    2. Remove all stopwords
+    3. Returns a list of the cleaned text
+    &quot;&quot;&quot;
+    # Check characters to see if they are in punctuation
+    nopunc = [char for char in mess if char not in string.punctuation]
+
+    # Join the characters again to form the string.
+    nopunc = ''.join(nopunc)
+
+    # Now just remove any stopwords
+    return [word for word in nopunc.split() if word.lower() not in stopwords.words('english')]
+</code></pre>
+<h3 id="tokenization">Tokenization</h3>
+<p>Apply the function ( text_process ) to the messages in the message row :</p>
+<pre><code class="language-python">messages['message'].head(5).apply(text_process)
+</code></pre></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+        <script src="../search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
