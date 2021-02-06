@@ -15,5 +15,6 @@ repo_name: https://github.com/Jcch94/cheatsheet
 repo_url: https://jcch94.github.io/cheatsheet/
 
 markdown_extensions:
-    - codehilite
+    - pymdownx.highlight
+    - pymdownx.superfences
     
