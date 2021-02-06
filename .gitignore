@@ -1,2 +1,4 @@
 # mkdocs documentation
 /site
+# shell script
+gitpush.sh
