@@ -439,7 +439,7 @@
 <li>AWS_SECRET_ACCESS_KEY</li>
 <li>AWS_DEFAULT_REGION</li>
 </ol>
-<div class="codehilite"><pre><span></span><code><span class="nt">variables</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">variables</span><span class="p">:</span>
   <span class="c1"># ask cloud engineer</span>
   <span class="nt">DEMOSITE_DOCKER_CONTAINER_PORT</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">8501</span>
   <span class="nt">DOCKER_REGISTRY</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">example.ap-southeast-1.amazonaws.com</span>
@@ -518,7 +518,6 @@
       <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">project/demo/*</span>
 <span class="c1"># ##############################################</span>
 </code></pre></div>
-
 <h2 id="stages">Stages</h2>
 <p>There are 3 main stages to terraform ci.</p>
 <ol>
@@ -527,7 +526,7 @@
 <li>Destroy</li>
 </ol>
 <h2 id="common-code-for-all-3-stages">Common code for all 3 stages</h2>
-<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="nv">$IMAGE_NAME$suffix</span>
+<div class="highlight"><pre><span></span><code><span class="nb">echo</span> <span class="nv">$IMAGE_NAME$suffix</span>
 aws s3 cp s3://<span class="nv">$S3_BUCKET_NAME</span>/TERRAFORM_INFRA <span class="s2">&quot;TERRAFORM_INFRA&quot;</span> --recursive --exclude <span class="s2">&quot;.sh&quot;</span> --exclude <span class="s2">&quot;.md&quot;</span> <span class="c1">## copies needed files from s3 bucket [terraform infra]</span>
 <span class="nb">cd</span> <span class="nv">$TERRAFORM_DIR</span>/<span class="nv">$folder</span>
 <span class="c1">## ******Creating relevant config files with variables populated by environment variables in gitlab **************</span>
@@ -545,9 +544,8 @@ cat production.tfvars
 <span class="c1">##*****************************************************************************************************************</span>
 terraform init -backend-config<span class="o">=</span>app-prod.config <span class="c1">## initialise terraform with the config files</span>
 </code></pre></div>
-
 <h3 id="plan">Plan</h3>
-<div class="codehilite"><pre><span></span><code><span class="nt">image</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><code><span class="nt">image</span><span class="p">:</span>
   <span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">zenika/terraform-aws-cli:latest</span>
   <span class="nt">entrypoint</span><span class="p">:</span>
     <span class="p p-Indicator">-</span> <span class="s">&quot;/usr/bin/env&quot;</span>
@@ -555,30 +553,25 @@ terraform init -backend-config<span class="o">=</span>app-prod.config <span clas
     <span class="p p-Indicator">-</span> <span class="s">&quot;AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}&quot;</span>
     <span class="p p-Indicator">-</span> <span class="s">&quot;AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}&quot;</span>
 </code></pre></div>
-
 <p>The image used is zenika/terraform-aws-cli, it has terraform with the latest aws-cli command line installed in it. This is to facilitate the creation of the ECR and ECS, which will both require login to be done.</p>
-<div class="codehilite"><pre><span></span><code>terraform plan -var-file<span class="o">=</span>production.tfvars -out <span class="s2">&quot;planfile_dev&quot;</span>
+<div class="highlight"><pre><span></span><code>terraform plan -var-file<span class="o">=</span>production.tfvars -out <span class="s2">&quot;planfile_dev&quot;</span>
 </code></pre></div>
-
 <h3 id="apply">Apply</h3>
-<div class="codehilite"><pre><span></span><code>terraform apply -var-file<span class="o">=</span>production.tfvars --auto-approve
+<div class="highlight"><pre><span></span><code>terraform apply -var-file<span class="o">=</span>production.tfvars --auto-approve
 <span class="nb">echo</span> <span class="s2">&quot;Terraform Apply &gt;&gt; done&quot;</span>
 </code></pre></div>
-
 <p>This creates the relevant aws ecr and ecs services, as specified in the config files.  </p>
 <h3 id="destroy">Destroy</h3>
-<div class="codehilite"><pre><span></span><code>terraform destroy -var-file<span class="o">=</span>production.tfvars --auto-approve
+<div class="highlight"><pre><span></span><code>terraform destroy -var-file<span class="o">=</span>production.tfvars --auto-approve
     <span class="nb">echo</span> <span class="s2">&quot;Terraform Destroy Plan &gt;&gt; done&quot;</span>
     <span class="nb">exit</span> <span class="m">0</span>
 </code></pre></div>
-
 <p>This destroys the terraform infrastructure as specified in the config file, the aws ecr and ecs. </p>
 <h2 id="deploying-streamlit-demosite">Deploying streamlit demosite</h2>
-<div class="codehilite"><pre><span></span><code>aws ecr get-login-password <span class="p">|</span> docker login --username AWS --password-stdin <span class="nv">$DOCKER_REGISTRY</span>
+<div class="highlight"><pre><span></span><code>aws ecr get-login-password <span class="p">|</span> docker login --username AWS --password-stdin <span class="nv">$DOCKER_REGISTRY</span>
 docker push <span class="nv">$DOCKER_REGISTRY</span>/<span class="nv">$ECS_CLUSTER_NAME</span>-<span class="nv">$IMAGE_NAME$suffix</span>:v1
 aws ecs update-service --cluster <span class="nv">$ECS_CLUSTER_NAME</span> --service <span class="nv">$IMAGE_NAME$suffix</span> --force-new-deployment --region <span class="nv">$AWS_DEFAULT_REGION</span>
 </code></pre></div>
-
 <p>This is used to deploy a docker image, in this case the demosite, to the aws ecr and ecs.  </p>
                 
               

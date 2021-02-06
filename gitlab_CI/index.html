@@ -307,7 +307,7 @@
                 
                 <h1 id="example-of-deploying-to-aws-ecr-from-a-base-docker-image">Example of deploying to aws ECR from a base docker image</h1>
 <p>This is an example code used to deploy to ECR from a base docker image. The goal is to first test if the streamlit demo site is running. Upon success , build a new docker image every time there is changes to the demo site , and only when the changes are commited in a merge request to master. This new image is then pushed to a ECR repository , if the repo does not exist, it will create it then add the image in. </p>
-<div class="codehilite"><pre><span></span><code><span class="nt">deploy-demo</span><span class="p">:</span>
+<p><div class="highlight"><pre><span></span><code><span class="nt">deploy-demo</span><span class="p">:</span>
   <span class="nt">stage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">deploy</span> 
   <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">docker</span> <span class="c1"># Base image which gitlab Ci runs first</span>
   <span class="nt">services</span><span class="p">:</span>
@@ -328,8 +328,7 @@
         <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">project/demo/*</span> <span class="c1">## and only if there are any change to files inside project / demo </span>
       <span class="nt">when</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">always</span>
 </code></pre></div>
-
-<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 
 <span class="c1"># build container</span>
@@ -374,7 +373,7 @@ docker tag <span class="si">${</span><span class="nv">FULL_IMAGE_NAME</span><spa
 <span class="nb">echo</span> <span class="s2">&quot;Pushing Image to </span><span class="si">${</span><span class="nv">FULL_IMAGE_NAME</span><span class="si">}</span><span class="s2"> repository&quot;</span>
 docker push <span class="nv">$DOCKER_REGISTRY</span>/<span class="nv">$FULL_IMAGE_NAME</span>:latest <span class="c1"># push image to ECR</span>
 aws ecr describe-images --repository-name <span class="nv">$FULL_IMAGE_NAME</span> <span class="c1"># describe the image to check if exists </span>
-</code></pre></div>
+</code></pre></div></p>
                 
               
               

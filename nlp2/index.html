@@ -355,27 +355,23 @@
                 <h1 id="general-nlp-steps">General NLP steps</h1>
 <h2 id="1-explore-the-dataset">1. Explore the dataset</h2>
 <p>Look through the data set in order to see how it is formatted , the labels and contents. Can do so using for loop for first few data points.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">messages</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<div class="highlight"><pre><span></span><code><span class="n">messages</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">mess_no</span><span class="p">,</span> <span class="n">message</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">messages</span><span class="p">[:</span><span class="mi">10</span><span class="p">]):</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">mess_no</span><span class="p">,</span><span class="n">message</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </code></pre></div>
-
 <h2 id="2-labelling">2. Labelling</h2>
 <p>In the case of the spam/ham messages , the label of whether or not it is spam / ham is at the front of the message , seperated by a tab.</p>
-<div class="codehilite"><pre><span></span><code>0 ham   Go until jurong point, crazy.. Available only in bugis n great world la e buffet... Cine there got amore wat...
+<div class="highlight"><pre><span></span><code>0 ham   Go until jurong point, crazy.. Available only in bugis n great world la e buffet... Cine there got amore wat...
 </code></pre></div>
-
 <p>We would need to put the label in a different column of the pd data frame.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">messages</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;smsspamcollection/SMSSpamCollection&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span><span class="s1">&#39;message&#39;</span><span class="p">])</span>
+<div class="highlight"><pre><span></span><code><span class="n">messages</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;smsspamcollection/SMSSpamCollection&#39;</span><span class="p">,</span><span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span><span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">,</span><span class="s1">&#39;message&#39;</span><span class="p">])</span>
 </code></pre></div>
-
 <p>Another useful attribute that might contribute could be length of message. To add that we add
 the end result would be a neatly seperated table with the label as different rows.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">messages</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">messages</span><span class="p">[</span><span class="s1">&#39;length&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">messages</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">len</span><span class="p">)</span>
 </code></pre></div>
-
 <table>
 <thead>
 <tr>
@@ -419,7 +415,7 @@ the end result would be a neatly seperated table with the label as different row
 </tbody>
 </table>
 <h2 id="import-relevant-libraries">Import relevant libraries</h2>
-<div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">string</span>
 
 <span class="n">mess</span> <span class="o">=</span> <span class="s1">&#39;Sample message! Notice: it has punctuation.&#39;</span>
 
@@ -429,19 +425,16 @@ the end result would be a neatly seperated table with the label as different row
 <span class="c1"># Join the characters again to form the string.</span>
 <span class="n">nopunc</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">nopunc</span><span class="p">)</span> <span class="c1">## The join() method takes all items in an iterable and joins them into one string. the space infront of the join is what seperates the diff words.</span>
 </code></pre></div>
-
 <h3 id="stopwords">Stopwords</h3>
 <p>stopwords are very common words that they do not help distinguish one source of text from the other.</p>
-<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
+<div class="highlight"><pre><span></span><code><span class="kn">from</span> <span class="nn">nltk.corpus</span> <span class="kn">import</span> <span class="n">stopwords</span>
 <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="c1"># Show some stop words</span>
 </code></pre></div>
-
 <p>First, we got to split the text up to individual words again. Next, we repeat the same function as nopunc to remove stopwords.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">clean_mess</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nopunc</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)]</span> <span class="c1">## put in a list all words that are not in stopwords english.</span>
+<div class="highlight"><pre><span></span><code><span class="n">clean_mess</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nopunc</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)]</span> <span class="c1">## put in a list all words that are not in stopwords english.</span>
 </code></pre></div>
-
 <h3 id="function-for-text-pre-processing">Function for text pre-processing</h3>
-<div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">text_process</span><span class="p">(</span><span class="n">mess</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><code><span class="k">def</span> <span class="nf">text_process</span><span class="p">(</span><span class="n">mess</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Takes in a string of text, then performs the following:</span>
 <span class="sd">    1. Remove all punctuation</span>
@@ -457,10 +450,9 @@ the end result would be a neatly seperated table with the label as different row
     <span class="c1"># Now just remove any stopwords</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">nopunc</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">stopwords</span><span class="o">.</span><span class="n">words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">)]</span>
 </code></pre></div>
-
 <h3 id="tokenization">Tokenization</h3>
 <p>Apply the function ( text_process ) to the messages in the message row :</p>
-<div class="codehilite"><pre><span></span><code><span class="n">messages</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">text_process</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="n">messages</span><span class="p">[</span><span class="s1">&#39;message&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">text_process</span><span class="p">)</span>
 </code></pre></div>
                 
               
