@@ -1,0 +1,1 @@
+# Some useful python commands to help with ML 
